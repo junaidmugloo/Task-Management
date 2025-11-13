@@ -1,0 +1,13 @@
+{
+  "$schema": "https://railway.com/schema/railpack.json",
+  "build": {
+    "steps": [
+      "cd frontend && npm install && npm run build",
+      "mkdir -p backend/static",
+      "cp -r frontend/dist/* backend/static"
+    ]
+  },
+  "deploy": {
+    "start": "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+  }
+}
