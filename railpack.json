@@ -2,18 +2,25 @@
   "$schema": "https://schema.railpack.com",
   "steps": {
     "install-frontend": {
+      "builder": "node",
       "commands": ["npm --prefix frontend install"]
     },
     "build-frontend": {
+      "builder": "node",
       "inputs": [{ "step": "install-frontend" }],
       "commands": ["npm --prefix frontend run build"]
     },
     "copy-build": {
+      "builder": "node",
       "inputs": [{ "step": "build-frontend" }],
-      "commands": ["cp -r frontend/dist/* backend/static/"]
+      "commands": [
+        "mkdir -p backend/static",
+        "cp -r frontend/dist/* backend/static/"
+      ]
     }
   },
   "deploy": {
+    "builder": "python",
     "startCommand": "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT",
     "inputs": [
       { "step": "copy-build", "include": ["backend"] }
