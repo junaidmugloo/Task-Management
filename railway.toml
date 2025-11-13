@@ -2,4 +2,4 @@
 command = "cd frontend && npm install && npm run build"
 
 [deploy]
-command = "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+command = "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
