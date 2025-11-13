@@ -23,7 +23,9 @@ app.add_middleware(
 )
 
 
-
+@app.get("/{full_path:path}")
+async def spa(full_path: str):
+    return FileResponse("backend/static/index.html")
 
 
 # --- AUTH ROUTES ---
