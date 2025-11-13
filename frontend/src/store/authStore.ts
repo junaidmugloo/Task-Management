@@ -34,7 +34,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (timeoutRef) window.clearTimeout(timeoutRef)
     set({ token: null, user: null, expiry: null })
     // optional: redirect to login
-    window.location.href = '/login'
+    window.location.href = '/'
   },
 
   scheduleAutoLogout: () => {
