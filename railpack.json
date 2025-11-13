@@ -1,29 +1,39 @@
 {
   "$schema": "https://schema.railpack.com",
+  "runtime": "nodejs",
+
   "steps": {
     "install-frontend": {
-      "builder": "node",
       "commands": ["npm --prefix frontend install"]
     },
     "build-frontend": {
-      "builder": "node",
       "inputs": [{ "step": "install-frontend" }],
       "commands": ["npm --prefix frontend run build"]
     },
+    "install-python": {
+      "commands": [
+        "apt-get update",
+        "apt-get install -y python3 python3-pip"
+      ]
+    },
+    "install-backend": {
+      "inputs": [{ "step": "install-python" }],
+      "commands": ["pip3 install -r backend/requirements.txt"]
+    },
     "copy-build": {
-      "builder": "node",
-      "inputs": [{ "step": "build-frontend" }],
+      "inputs": [
+        { "step": "build-frontend" },
+        { "step": "install-backend" }
+      ],
       "commands": [
         "mkdir -p backend/static",
         "cp -r frontend/dist/* backend/static/"
       ]
     }
   },
+
   "deploy": {
-    "builder": "python",
-    "startCommand": "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT",
-    "inputs": [
-      { "step": "copy-build", "include": ["backend"] }
-    ]
+    "startCommand": "python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT",
+    "inputs": [{ "step": "copy-build", "include": ["backend"] }]
   }
 }
