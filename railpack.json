@@ -2,11 +2,11 @@
   "$schema": "https://schema.railpack.com",
   "steps": {
     "install-frontend": {
-      "commands": ["cd frontend && npm install"]
+      "commands": ["npm --prefix frontend install"]
     },
     "build-frontend": {
       "inputs": [{ "step": "install-frontend" }],
-      "commands": ["cd frontend && npm run build"]
+      "commands": ["npm --prefix frontend run build"]
     },
     "copy-build": {
       "inputs": [{ "step": "build-frontend" }],
