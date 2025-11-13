@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useAuthStore } from '../store/authStore'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000', // change to your backend
+  baseURL: 'http://https://task-management-production-a648.up.railway.app', // change to your backend
   timeout: 15000,
 })
 
