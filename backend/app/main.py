@@ -26,7 +26,7 @@ app.add_middleware(
 
 
 
-app.mount("/assets", StaticFiles(directory="../backend/static/assets"), name="assets")
+app.mount("/assets", StaticFiles(directory="/backend/static/assets"), name="assets")
 
 
 
@@ -90,4 +90,4 @@ def delete_task(task_id: int, db: Session = Depends(get_db), current_user: model
 
 @app.get("")
 async def spa():
-    return FileResponse("../backend/static/index.html")
+    return FileResponse("/backend/static/index.html")
