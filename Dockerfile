@@ -1,8 +1,8 @@
 # ================================
 # 1) Build React Frontend
 # ================================
-FROM node:18 AS frontend
 
+FROM node:20 AS frontend
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
