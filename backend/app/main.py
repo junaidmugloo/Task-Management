@@ -12,6 +12,8 @@ models.Base.metadata.create_all(bind=engine)
 
 # allow all cross-origin requests (CORS) 
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(title="Task Tracker API")
 app.add_middleware(
@@ -23,9 +25,13 @@ app.add_middleware(
 )
 
 
+
+app.mount("/assets", StaticFiles(directory="../backend/static/assets"), name="assets")
+
+
 @app.get("/{full_path:path}")
 async def spa(full_path: str):
-    return FileResponse("backend/static/index.html")
+    return FileResponse("../backend/static/index.html")
 
 
 # --- AUTH ROUTES ---
