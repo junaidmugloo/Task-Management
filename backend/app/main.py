@@ -25,7 +25,27 @@ app.add_middleware(
 )
 
 
+# Correct paths inside Docker: /app/backend/static/assets
+STATIC_ROOT = "backend/static"
 
+# 1. Serve Vite asset folder
+app.mount(
+    "/assets",
+    StaticFiles(directory=f"{STATIC_ROOT}/assets"),
+    name="assets"
+)
+
+# 2. Serve images, icons, manifest, etc
+app.mount(
+    "/static",
+    StaticFiles(directory=STATIC_ROOT),
+    name="static"
+)
+
+# 3. SPA fallback (always BELOW the static mounts)
+@app.get("/")
+async def spa():
+    return FileResponse(f"{STATIC_ROOT}/index.html")
 
 
 
@@ -85,9 +105,3 @@ def delete_task(task_id: int, db: Session = Depends(get_db), current_user: model
     crud.delete_task(db, task)
     return None
 
-
-app.mount("/assets", StaticFiles(directory="../backend/static/assets"), name="assets")
-
-@app.get("")
-async def spa():
-    return FileResponse("../backend/static/index.html")
