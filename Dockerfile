@@ -1,8 +1,8 @@
 # ================================
-# 1) Build React Frontend
+# 1) Build React Frontend (Vite)
 # ================================
-
 FROM node:20 AS frontend
+
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
@@ -16,17 +16,14 @@ FROM python:3.11 AS backend
 
 WORKDIR /app
 
-# Copy backend code
 COPY backend/ ./backend/
 
-# Ensure static folder exists
 RUN mkdir -p backend/static
 
-# Copy frontend build output to backend/static
 COPY --from=frontend /app/frontend/dist/ ./backend/static/
 
-# Install backend dependencies
-RUN pip install --no-cache-dir -r backend/requirements.txt
+# Install backend requirements + uvicorn
+RUN pip install --no-cache-dir -r backend/requirements.txt uvicorn
 
 # ================================
 # 3) Final Runtime Image
@@ -35,10 +32,8 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy backend
 COPY --from=backend /app/backend ./backend
 
 EXPOSE 8000
 
-# Start FastAPI
 CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
