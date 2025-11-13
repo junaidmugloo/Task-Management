@@ -29,10 +29,6 @@ app.add_middleware(
 app.mount("/assets", StaticFiles(directory="../backend/static/assets"), name="assets")
 
 
-@app.get("/{full_path:path}")
-async def spa(full_path: str):
-    return FileResponse("../backend/static/index.html")
-
 
 # --- AUTH ROUTES ---
 
@@ -89,3 +85,9 @@ def delete_task(task_id: int, db: Session = Depends(get_db), current_user: model
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
     crud.delete_task(db, task)
     return None
+
+
+
+@app.get("")
+async def spa():
+    return FileResponse("../backend/static/index.html")
