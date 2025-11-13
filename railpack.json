@@ -1,13 +1,22 @@
 {
-  "$schema": "https://railway.com/schema/railpack.json",
-  "build": {
-    "steps": [
-      "cd frontend && npm install && npm run build",
-      "mkdir -p backend/static",
-      "cp -r frontend/dist/* backend/static"
-    ]
+  "$schema": "https://schema.railpack.com",
+  "steps": {
+    "install-frontend": {
+      "commands": ["cd frontend && npm install"]
+    },
+    "build-frontend": {
+      "inputs": [{ "step": "install-frontend" }],
+      "commands": ["cd frontend && npm run build"]
+    },
+    "copy-build": {
+      "inputs": [{ "step": "build-frontend" }],
+      "commands": ["cp -r frontend/dist/* backend/static/"]
+    }
   },
   "deploy": {
-    "start": "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    "startCommand": "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT",
+    "inputs": [
+      { "step": "copy-build", "include": ["backend"] }
+    ]
   }
 }
