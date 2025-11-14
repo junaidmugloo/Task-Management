@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 
 const links = [
-  { to: '/', label: 'Dashboard' },
-  { to: '/add-task', label: 'Add Task' },
+  { to: '/', label: '📊 Dashboard' },
+  { to: '/add-task', label: '📝 Add Task' },
 ]
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}
               `}
             >
-              {open ? l.label : l.label.charAt(0)}
+              {open ? l.label : l.label}
             </Link>
           ))}
         </nav>
@@ -68,7 +68,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             onClick={logout}
             className="w-full text-left px-3 py-2 rounded-md text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            {open ? 'Logout' : '⏻'}
+            {open ? '⏻ Logout' : '⏻'}
           </button>
         </div>
 
